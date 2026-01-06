@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Notificador de últimas compras (Pro)
  * Description: Social Proof modular: notificaciones, contador de vistas, aviso de precio dinámico y captación de correos.
- * Version: 5.2.0
+ * Version: 5.2.1
  * Author: Jose Muñoz
  */
 
@@ -720,11 +720,93 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
         $cupon     = get_option( 'jsn_newsletter_coupon_code', 'VERANO15' );
         $plantilla = str_replace( '%COUPON_CODE%', esc_html( $cupon ), $plantilla );
 
+        $contenido = $this->sanitizar_html_correo( $plantilla );
+
         $headers = array( 'Content-Type: text/html; charset=UTF-8' );
-        wp_mail( $email, $asunto, wp_kses_post( $plantilla ), $headers );
+        wp_mail( $email, $asunto, $contenido, $headers );
 
         $exito = get_option( 'jsn_newsletter_success_text', '¡Gracias! Revisa tu bandeja de entrada para ver tu cupón.' );
         wp_send_json_success( array( 'mensaje' => $exito ) );
+    }
+
+    /**
+     * Sanitiza el HTML del correo permitiendo los elementos necesarios.
+     */
+    private function sanitizar_html_correo( $html ) {
+        $permitidos = wp_kses_allowed_html( 'post' );
+
+        $extra = array(
+            'table' => array(
+                'align'       => true,
+                'border'      => true,
+                'cellpadding' => true,
+                'cellspacing' => true,
+                'width'       => true,
+                'style'       => true,
+            ),
+            'tr' => array(
+                'align' => true,
+                'style' => true,
+            ),
+            'td' => array(
+                'align'   => true,
+                'style'   => true,
+                'width'   => true,
+                'height'  => true,
+                'valign'  => true,
+                'colspan' => true,
+                'rowspan' => true,
+            ),
+            'th' => array(
+                'align'   => true,
+                'style'   => true,
+                'width'   => true,
+                'height'  => true,
+                'valign'  => true,
+                'colspan' => true,
+                'rowspan' => true,
+            ),
+            'tbody' => array( 'style' => true ),
+            'thead' => array( 'style' => true ),
+            'tfoot' => array( 'style' => true ),
+            'img' => array(
+                'src'    => true,
+                'alt'    => true,
+                'width'  => true,
+                'height' => true,
+                'style'  => true,
+            ),
+            'div' => array(
+                'style' => true,
+                'align' => true,
+            ),
+            'span' => array(
+                'style' => true,
+            ),
+            'p' => array(
+                'style' => true,
+                'align' => true,
+            ),
+            'h1' => array(
+                'style' => true,
+                'align' => true,
+            ),
+            'a' => array(
+                'href'   => true,
+                'style'  => true,
+                'target' => true,
+                'title'  => true,
+            ),
+            'style' => array(),
+        );
+
+        $permitidos = array_merge( $permitidos, $extra );
+
+        $sanitizado = wp_kses( $html, $permitidos );
+        if ( '' === trim( $sanitizado ) ) {
+            $sanitizado = '<p style="font-family:Arial,sans-serif;font-size:14px;">Gracias por unirte. Muy pronto recibirás nuestras novedades.</p>';
+        }
+        return $sanitizado;
     }
 }
 
