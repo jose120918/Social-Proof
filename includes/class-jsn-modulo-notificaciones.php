@@ -32,7 +32,7 @@ class JSN_Modulo_Notificaciones extends JSN_Modulo_Base {
             <div class="jsn-card-head">
                 <div>
                     <p class="jsn-eyebrow">Módulo</p>
-                    <h2>🔔 Ventana flotante</h2>
+                    <h2>🔔 Ventana flotante <span class="jsn-tip" data-tip="Popup que rota productos o pedidos recientes cada cierto intervalo.">?</span></h2>
                     <p class="description">Popup lateral con actividad de compras recientes.</p>
                 </div>
                 <label class="jsn-toggle">

@@ -35,7 +35,7 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
             <div class="jsn-card-head">
                 <div>
                     <p class="jsn-eyebrow">Módulo</p>
-                    <h2>✉️ Newsletter</h2>
+                    <h2>✉️ Newsletter <span class="jsn-tip" data-tip="Shortcode minimalista, envío HTML, almacenamiento y exportación CSV.">?</span></h2>
                     <p class="description">Captura correos, envía HTML y exporta CSV.</p>
                 </div>
                 <label class="jsn-toggle">

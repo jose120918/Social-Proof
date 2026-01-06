@@ -30,7 +30,7 @@ class JSN_Modulo_Visitas extends JSN_Modulo_Base {
             <div class="jsn-card-head">
                 <div>
                     <p class="jsn-eyebrow">Módulo</p>
-                    <h2>👁️ Indicador de visitas</h2>
+                    <h2>👁️ Indicador de visitas <span class="jsn-tip" data-tip="Muestra cuántas personas ven el producto en ficha o shortcode.">?</span></h2>
                     <p class="description">Muestra cuántas personas ven el producto en tiempo real.</p>
                 </div>
                 <label class="jsn-toggle">

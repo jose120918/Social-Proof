@@ -83,30 +83,42 @@ class JSN_Social_Proof_Plugin {
         }
         ?>
         <div class="wrap jsn-admin">
-            <h1>Notificador de últimas compras</h1>
-            <p class="description">Panel central para activar/desactivar módulos y ajustar textos, estilos y plantillas.</p>
-            <div class="jsn-banner">
+            <div class="jsn-hero">
                 <div>
-                    <strong>Panel central</strong>
-                    <p>Controla visitas, popup, aviso de precios y newsletter desde aquí.</p>
+                    <p class="jsn-eyebrow">Panel central</p>
+                    <h1>Notificador de últimas compras</h1>
+                    <p class="description">Controla visitas, popup, aviso de precios y newsletter en un solo lugar.</p>
+                    <div class="jsn-tags">
+                        <span class="jsn-tag">Versión 5.6.0</span>
+                        <span class="jsn-tag jsn-soft">WooCommerce</span>
+                        <span class="jsn-tag jsn-soft">Shortcodes</span>
+                    </div>
                 </div>
-                <div class="jsn-badges">
-                    <span class="jsn-badge">Versión 5.4.0</span>
+                <div class="jsn-hero-actions">
+                    <div class="jsn-tip" data-tip="Usa este panel para activar/desactivar y ajustar textos, colores y plantillas.">?</div>
                 </div>
             </div>
 
             <style>
-                .jsn-admin .jsn-banner { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:#f0f6ff; border:1px solid #b6d1ff; border-radius:8px; margin:12px 0 20px; }
-                .jsn-badges .jsn-badge { background:#111827; color:#fff; padding:6px 10px; border-radius:14px; font-size:12px; }
-                .jsn-card { background: #fff; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgba(0,0,0,.04); padding: 18px; margin-bottom: 18px; border-radius: 8px; }
-                .jsn-card-head { display:flex; justify-content:space-between; align-items:center; gap:16px; border-bottom:1px solid #f0f0f1; padding-bottom:10px; margin-bottom:12px; }
-                .jsn-eyebrow { text-transform:uppercase; letter-spacing:0.4px; font-size:11px; color:#6b7280; margin:0 0 4px 0; }
-                .jsn-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
-                .jsn-inline { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-                .jsn-toggle { display:flex; align-items:center; gap:8px; font-weight:600; }
-                .jsn-toggle input { transform: scale(1.2); }
-                .jsn-foot-note { margin-top:10px; font-size:12px; color:#4b5563; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+                .jsn-admin { max-width: 1200px; }
+                .jsn-admin .jsn-hero { display:flex; justify-content:space-between; align-items:flex-start; padding:18px 20px; background:linear-gradient(135deg, #f5f7ff 0%, #eef2ff 60%, #ffffff 100%); border:1px solid #e5e7eb; border-radius:14px; margin:0 0 18px; box-shadow:0 10px 30px rgba(0,0,0,0.04); }
+                .jsn-tags { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+                .jsn-tag { background:#111827; color:#fff; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:600; }
+                .jsn-tag.jsn-soft { background:#e5e7eb; color:#111827; }
+                .jsn-card { background: #fff; border: 1px solid #e5e7eb; box-shadow: 0 6px 18px rgba(17, 24, 39, 0.05); padding: 20px; margin-bottom: 18px; border-radius: 12px; transition:transform 0.12s ease, box-shadow 0.12s ease; }
+                .jsn-card:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(17, 24, 39, 0.07); }
+                .jsn-card-head { display:flex; justify-content:space-between; align-items:center; gap:16px; border-bottom:1px solid #f3f4f6; padding-bottom:12px; margin-bottom:14px; }
+                .jsn-eyebrow { text-transform:uppercase; letter-spacing:0.5px; font-size:11px; color:#6b7280; margin:0 0 4px 0; }
+                .jsn-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; }
+                .jsn-inline { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+                .jsn-toggle { display:flex; align-items:center; gap:8px; font-weight:600; background:#f9fafb; padding:8px 12px; border-radius:8px; border:1px solid #e5e7eb; }
+                .jsn-toggle input { transform: scale(1.2); margin:0; }
+                .jsn-foot-note { margin-top:12px; font-size:12px; color:#4b5563; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
                 .jsn-admin .description { color:#4b5563; }
+                .jsn-hero-actions { display:flex; gap:10px; align-items:center; }
+                .jsn-tip { width:26px; height:26px; border-radius:50%; background:#111827; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer; position:relative; }
+                .jsn-tip::after { content: attr(data-tip); position:absolute; bottom:-4px; left:50%; transform:translate(-50%, 100%); background:#111827; color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; line-height:1.4; width:220px; opacity:0; pointer-events:none; transition:opacity 0.15s ease; }
+                .jsn-tip:hover::after { opacity:1; }
             </style>
 
             <form method="post" action="options.php">

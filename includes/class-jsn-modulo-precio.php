@@ -25,7 +25,7 @@ class JSN_Modulo_Precio extends JSN_Modulo_Base {
             <div class="jsn-card-head">
                 <div>
                     <p class="jsn-eyebrow">Módulo</p>
-                    <h2>💹 Dinámica de precios</h2>
+                    <h2>💹 Dinámica de precios <span class="jsn-tip" data-tip="Solo muestra un aviso informativo; no modifica precios en WooCommerce.">?</span></h2>
                     <p class="description">Añade un aviso informativo junto al precio.</p>
                 </div>
                 <label class="jsn-toggle">
