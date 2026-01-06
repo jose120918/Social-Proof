@@ -116,8 +116,8 @@ class JSN_Social_Proof_Plugin {
                 .jsn-foot-note { margin-top:12px; font-size:12px; color:#4b5563; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
                 .jsn-admin .description { color:#4b5563; }
                 .jsn-hero-actions { display:flex; gap:10px; align-items:center; }
-                .jsn-tip { width:26px; height:26px; border-radius:50%; background:#111827; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer; position:relative; }
-                .jsn-tip::after { content: attr(data-tip); position:absolute; bottom:-4px; left:50%; transform:translate(-50%, 100%); background:#111827; color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; line-height:1.4; width:220px; opacity:0; pointer-events:none; transition:opacity 0.15s ease; }
+                .jsn-tip { width:20px; height:20px; border-radius:50%; background:#111827; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer; position:relative; font-size:11px; }
+                .jsn-tip::after { content: attr(data-tip); position:absolute; top:26px; left:50%; transform:translate(-50%, 0); background:#111827; color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; line-height:1.4; width:240px; max-width:260px; white-space:normal; text-align:left; box-shadow:0 6px 18px rgba(0,0,0,0.15); opacity:0; pointer-events:none; transition:opacity 0.15s ease; z-index:100; }
                 .jsn-tip:hover::after { opacity:1; }
             </style>
 
