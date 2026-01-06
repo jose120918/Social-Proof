@@ -100,14 +100,14 @@ class JSN_Social_Proof_Plugin {
             </div>
 
             <style>
-                .jsn-admin { max-width: 1200px; }
-                .jsn-admin .jsn-hero { display:flex; justify-content:space-between; align-items:flex-start; padding:18px 20px; background:linear-gradient(135deg, #f5f7ff 0%, #eef2ff 60%, #ffffff 100%); border:1px solid #e5e7eb; border-radius:14px; margin:0 0 18px; box-shadow:0 10px 30px rgba(0,0,0,0.04); }
+                .jsn-admin { max-width: 1400px; }
+                .jsn-admin .jsn-hero { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; padding:18px 20px; background:linear-gradient(135deg, #f5f7ff 0%, #eef2ff 60%, #ffffff 100%); border:1px solid #e5e7eb; border-radius:14px; margin:0 0 18px; box-shadow:0 10px 30px rgba(0,0,0,0.04); gap:12px; }
                 .jsn-tags { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
                 .jsn-tag { background:#111827; color:#fff; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:600; }
                 .jsn-tag.jsn-soft { background:#e5e7eb; color:#111827; }
                 .jsn-card { background: #fff; border: 1px solid #e5e7eb; box-shadow: 0 6px 18px rgba(17, 24, 39, 0.05); padding: 20px; margin-bottom: 18px; border-radius: 12px; transition:transform 0.12s ease, box-shadow 0.12s ease; }
-                .jsn-card:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(17, 24, 39, 0.07); }
-                .jsn-card-head { display:flex; justify-content:space-between; align-items:center; gap:16px; border-bottom:1px solid #f3f4f6; padding-bottom:12px; margin-bottom:14px; }
+                .jsn-card:hover { transform:translateY(-1px); box-shadow:0 10px 24px rgba(17, 24, 39, 0.06); }
+                .jsn-card-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; border-bottom:1px solid #f3f4f6; padding-bottom:12px; margin-bottom:14px; }
                 .jsn-eyebrow { text-transform:uppercase; letter-spacing:0.5px; font-size:11px; color:#6b7280; margin:0 0 4px 0; }
                 .jsn-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; }
                 .jsn-inline { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
@@ -116,9 +116,15 @@ class JSN_Social_Proof_Plugin {
                 .jsn-foot-note { margin-top:12px; font-size:12px; color:#4b5563; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
                 .jsn-admin .description { color:#4b5563; }
                 .jsn-hero-actions { display:flex; gap:10px; align-items:center; }
-                .jsn-tip { width:20px; height:20px; border-radius:50%; background:#111827; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer; position:relative; font-size:11px; }
-                .jsn-tip::after { content: attr(data-tip); position:absolute; top:26px; left:50%; transform:translate(-50%, 0); background:#111827; color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; line-height:1.4; width:240px; max-width:260px; white-space:normal; text-align:left; box-shadow:0 6px 18px rgba(0,0,0,0.15); opacity:0; pointer-events:none; transition:opacity 0.15s ease; z-index:100; }
+                .jsn-tip { width:18px; height:18px; border-radius:50%; background:#111827; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer; position:relative; font-size:10px; }
+                .jsn-tip::after { content: attr(data-tip); position:absolute; top:24px; left:0; transform:translateX(0); background:#111827; color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; line-height:1.4; width:max(220px, 32vw); max-width:360px; white-space:normal; text-align:left; box-shadow:0 6px 18px rgba(0,0,0,0.15); opacity:0; pointer-events:none; transition:opacity 0.15s ease; z-index:100; }
                 .jsn-tip:hover::after { opacity:1; }
+                @media (max-width: 960px) {
+                    .jsn-admin { padding-right: 8px; padding-left: 0; }
+                    .jsn-card { padding:16px; }
+                    .jsn-grid { grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); }
+                    .jsn-tip::after { width: 80vw; max-width: 380px; }
+                }
             </style>
 
             <form method="post" action="options.php">

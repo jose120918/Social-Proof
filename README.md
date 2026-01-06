@@ -53,7 +53,7 @@ Todas las opciones se almacenan mediante la API de Settings (`jsn_group`). Cada 
 
 ## Panel y UX
 - Menú en el admin: **Notificador de últimas compras**.
-- Dashboard modernizado con tarjetas elevadas, toggles resaltados y tooltips contextuales (ajuste de tamaño y texto para evitar cortes).
+- Dashboard modernizado con tarjetas elevadas, toggles resaltados y tooltips contextuales (ajuste de tamaño y texto para evitar cortes y desbordes, con comportamiento responsive).
 - Cupón y confirmación: `jsn_newsletter_coupon_code` para rellenar el placeholder `%COUPON_CODE%` en la plantilla HTML (incluida por defecto con el diseño proporcionado) y `jsn_newsletter_success_text` para el mensaje de éxito que ve el usuario.
 - Sanitización del correo: la plantilla HTML se limpia permitiendo tablas, estilos inline e imágenes, y se admiten etiquetas `html`, `head`, `body`, `style`, `meta`, `title`. Si la salida quedara vacía se usa la plantilla por defecto con cupón, evitando errores de “Message body empty”.
 
