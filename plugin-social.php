@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Notificador de últimas compras (Pro)
  * Description: Social Proof modular: notificaciones, contador de vistas, aviso de precio dinámico y captación de correos.
- * Version: 5.1.0
+ * Version: 5.2.0
  * Author: Jose Muñoz
  */
 
@@ -532,6 +532,8 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
         register_setting( 'jsn_group', 'jsn_newsletter_disclaimer' );
         register_setting( 'jsn_group', 'jsn_newsletter_email_html' );
         register_setting( 'jsn_group', 'jsn_newsletter_subject' );
+        register_setting( 'jsn_group', 'jsn_newsletter_coupon_code' );
+        register_setting( 'jsn_group', 'jsn_newsletter_success_text' );
     }
 
     public function imprimir_configuracion() {
@@ -570,10 +572,31 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
                     </td>
                 </tr>
                 <tr>
+                    <th>Código de cupón</th>
+                    <td>
+                        <input type="text" name="jsn_newsletter_coupon_code" value="<?php echo esc_attr( get_option( 'jsn_newsletter_coupon_code', 'VERANO15' ) ); ?>" class="regular-text">
+                        <p class="description">Solo se cambia el texto del cupón; el resto del HTML permanece igual.</p>
+                    </td>
+                </tr>
+                <tr>
                     <th>HTML del correo</th>
                     <td>
-                        <textarea name="jsn_newsletter_email_html" rows="8" class="large-text code"><?php echo esc_textarea( get_option( 'jsn_newsletter_email_html', '<h2>Gracias por unirte</h2><p>Muy pronto recibirás nuestras promociones y novedades.</p>' ) ); ?></textarea>
-                        <p class="description">Plantilla enviada al usuario. Se envía como <code>text/html</code>.</p>
+                        <textarea name="jsn_newsletter_email_html" rows="16" class="large-text code"><?php
+                        echo esc_textarea(
+                            get_option(
+                                'jsn_newsletter_email_html',
+                                "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Descuento La Veranera</title>\n    <style>\n        body { margin: 0; padding: 0; background-color: #f4f4f4; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }\n        table { border-collapse: collapse; }\n        img { display: block; max-width: 100%; height: auto; }\n        .wrapper { width: 100%; table-layout: fixed; background-color: #f4f4f4; padding-bottom: 40px; }\n        .main-content { background-color: #ffffff; margin: 0 auto; width: 100%; max-width: 600px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }\n        .btn-primary { background-color: #1e2632; color: #ffffff !important; text-decoration: none; padding: 12px 30px; border-radius: 4px; display: inline-block; font-weight: bold; font-size: 16px; letter-spacing: 0.5px; }\n    </style>\n</head>\n<body>\n    <div class=\"wrapper\">\n        <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n            <tr>\n                <td align=\"center\" style=\"padding: 20px 0;\">\n                    </td>\n            </tr>\n            <tr>\n                <td align=\"center\">\n                    <table class=\"main-content\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n                        <tr>\n                            <td align=\"center\" style=\"padding: 40px 20px 20px 20px; background-color: #ffffff;\">\n                                <img src=\"https://laveranera.prototipo.com.co/wp-content/uploads/2025/07/La-veranera.png\" alt=\"Logo La Veranera\" width=\"180\" style=\"width: 180px;\">\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"background-color: #fafafa; padding: 0;\">\n                                <div style=\"height: 2px; background-color: #eee; width: 90%;\"></div>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"padding: 40px 30px; text-align: center;\">\n                                <h1 style=\"color: #1e2632; font-family: 'Georgia', serif; font-size: 24px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;\">\n                                    ¡Gracias por unirte!\n                                </h1>\n                                <p style=\"color: #666666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;\">\n                                    Estamos felices de que seas parte de la familia <strong>La Veranera</strong>. Como lo prometimos, aquí tienes un obsequio especial para que disfrutes de nuestras tablas de quesos y sangrías con una sonrisa.\n                                </p>\n                                \n                                <div style=\"background-color: #f9f9f9; border: 2px dashed #1e2632; padding: 20px; display: inline-block; margin-bottom: 30px; border-radius: 4px;\">\n                                    <span style=\"display: block; font-size: 12px; color: #888; margin-bottom: 5px; text-transform: uppercase;\">Tu código de descuento:</span>\n                                    <span style=\"font-family: 'Helvetica', sans-serif; font-size: 28px; color: #1e2632; font-weight: 800; letter-spacing: 2px;\">%COUPON_CODE%</span>\n                                </div>\n                                \n                                <p style=\"color: #666666; font-size: 14px; margin-bottom: 30px;\">\n                                    Presenta este cupón en nuestro punto físico o úsalo en tu próxima reserva.\n                                </p>\n\n                                <a href=\"https://laveranerasangriaoficial.com/\" target=\"_blank\" class=\"btn-primary\">\n                                    VER MENÚ COMPLETO\n                                </a>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"background-color: #1e2632; padding: 30px;\">\n                                <p style=\"color: #ffffff; font-size: 14px; margin: 0 0 10px 0; font-family: 'Georgia', serif;\">La Veranera</p>\n                                <p style=\"color: #8d95a1; font-size: 12px; margin: 0;\">\n                                    Sangría & Tablas de Quesos<br>\n                                    Bucaramanga, Santander\n                                </p>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align=\"center\" style=\"padding: 20px 0;\">\n                    <p style=\"font-size: 11px; color: #999999;\">\n                        Recibiste este correo porque te suscribiste en nuestro sitio web.\n                    </p>\n                </td>\n            </tr>\n        </table>\n    </div>\n</body>\n</html>"
+                            )
+                        );
+                        ?></textarea>
+                        <p class="description">Plantilla enviada al usuario. Se envía como <code>text/html</code>. Usa <code>%COUPON_CODE%</code> para colocar el código configurado arriba.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Mensaje de éxito (frontend)</th>
+                    <td>
+                        <input type="text" name="jsn_newsletter_success_text" value="<?php echo esc_attr( get_option( 'jsn_newsletter_success_text', '¡Gracias! Revisa tu bandeja de entrada para ver tu cupón.' ) ); ?>" class="large-text">
+                        <p class="description">Texto mostrado al usuario cuando el correo se envía correctamente.</p>
                     </td>
                 </tr>
                 <tr>
@@ -689,13 +712,19 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
             array( '%s', '%s', '%s' )
         );
 
-        $plantilla = get_option( 'jsn_newsletter_email_html', '<h2>Gracias por unirte</h2><p>Muy pronto recibirás nuestras promociones y novedades.</p>' );
+        $plantilla = get_option(
+            'jsn_newsletter_email_html',
+            "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Descuento La Veranera</title>\n    <style>\n        body { margin: 0; padding: 0; background-color: #f4f4f4; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }\n        table { border-collapse: collapse; }\n        img { display: block; max-width: 100%; height: auto; }\n        .wrapper { width: 100%; table-layout: fixed; background-color: #f4f4f4; padding-bottom: 40px; }\n        .main-content { background-color: #ffffff; margin: 0 auto; width: 100%; max-width: 600px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }\n        .btn-primary { background-color: #1e2632; color: #ffffff !important; text-decoration: none; padding: 12px 30px; border-radius: 4px; display: inline-block; font-weight: bold; font-size: 16px; letter-spacing: 0.5px; }\n    </style>\n</head>\n<body>\n    <div class=\"wrapper\">\n        <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n            <tr>\n                <td align=\"center\" style=\"padding: 20px 0;\">\n                    </td>\n            </tr>\n            <tr>\n                <td align=\"center\">\n                    <table class=\"main-content\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n                        <tr>\n                            <td align=\"center\" style=\"padding: 40px 20px 20px 20px; background-color: #ffffff;\">\n                                <img src=\"https://laveranera.prototipo.com.co/wp-content/uploads/2025/07/La-veranera.png\" alt=\"Logo La Veranera\" width=\"180\" style=\"width: 180px;\">\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"background-color: #fafafa; padding: 0;\">\n                                <div style=\"height: 2px; background-color: #eee; width: 90%;\"></div>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"padding: 40px 30px; text-align: center;\">\n                                <h1 style=\"color: #1e2632; font-family: 'Georgia', serif; font-size: 24px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;\">\n                                    ¡Gracias por unirte!\n                                </h1>\n                                <p style=\"color: #666666; font-size: 16px; line-height: 1.6; margin-bottom: 30px;\">\n                                    Estamos felices de que seas parte de la familia <strong>La Veranera</strong>. Como lo prometimos, aquí tienes un obsequio especial para que disfrutes de nuestras tablas de quesos y sangrías con una sonrisa.\n                                </p>\n                                \n                                <div style=\"background-color: #f9f9f9; border: 2px dashed #1e2632; padding: 20px; display: inline-block; margin-bottom: 30px; border-radius: 4px;\">\n                                    <span style=\"display: block; font-size: 12px; color: #888; margin-bottom: 5px; text-transform: uppercase;\">Tu código de descuento:</span>\n                                    <span style=\"font-family: 'Helvetica', sans-serif; font-size: 28px; color: #1e2632; font-weight: 800; letter-spacing: 2px;\">%COUPON_CODE%</span>\n                                </div>\n                                \n                                <p style=\"color: #666666; font-size: 14px; margin-bottom: 30px;\">\n                                    Presenta este cupón en nuestro punto físico o úsalo en tu próxima reserva.\n                                </p>\n\n                                <a href=\"https://laveranerasangriaoficial.com/\" target=\"_blank\" class=\"btn-primary\">\n                                    VER MENÚ COMPLETO\n                                </a>\n                            </td>\n                        </tr>\n\n                        <tr>\n                            <td align=\"center\" style=\"background-color: #1e2632; padding: 30px;\">\n                                <p style=\"color: #ffffff; font-size: 14px; margin: 0 0 10px 0; font-family: 'Georgia', serif;\">La Veranera</p>\n                                <p style=\"color: #8d95a1; font-size: 12px; margin: 0;\">\n                                    Sangría & Tablas de Quesos<br>\n                                    Bucaramanga, Santander\n                                </p>\n                            </td>\n                        </tr>\n                    </table>\n                </td>\n            </tr>\n            <tr>\n                <td align=\"center\" style=\"padding: 20px 0;\">\n                    <p style=\"font-size: 11px; color: #999999;\">\n                        Recibiste este correo porque te suscribiste en nuestro sitio web.\n                    </p>\n                </td>\n            </tr>\n        </table>\n    </div>\n</body>\n</html>"
+        );
         $asunto    = get_option( 'jsn_newsletter_subject', 'Gracias por suscribirte a nuestras novedades' );
+        $cupon     = get_option( 'jsn_newsletter_coupon_code', 'VERANO15' );
+        $plantilla = str_replace( '%COUPON_CODE%', esc_html( $cupon ), $plantilla );
 
         $headers = array( 'Content-Type: text/html; charset=UTF-8' );
         wp_mail( $email, $asunto, wp_kses_post( $plantilla ), $headers );
 
-        wp_send_json_success( array( 'mensaje' => 'Correo registrado y mensaje enviado con éxito.' ) );
+        $exito = get_option( 'jsn_newsletter_success_text', '¡Gracias! Revisa tu bandeja de entrada para ver tu cupón.' );
+        wp_send_json_success( array( 'mensaje' => $exito ) );
     }
 }
 
