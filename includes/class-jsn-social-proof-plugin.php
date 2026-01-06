@@ -105,12 +105,13 @@ class JSN_Social_Proof_Plugin {
                 .jsn-tags { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
                 .jsn-tag { background:#111827; color:#fff; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:600; }
                 .jsn-tag.jsn-soft { background:#e5e7eb; color:#111827; }
-                .jsn-card { background: #fff; border: 1px solid #e5e7eb; box-shadow: 0 6px 18px rgba(17, 24, 39, 0.05); padding: 20px; margin-bottom: 18px; border-radius: 12px; transition:transform 0.12s ease, box-shadow 0.12s ease; }
+                .jsn-card { background: #fff; border: 1px solid #e5e7eb; box-shadow: 0 6px 18px rgba(17, 24, 39, 0.05); padding: 24px; margin-bottom: 20px; border-radius: 14px; transition:transform 0.12s ease, box-shadow 0.12s ease; }
                 .jsn-card:hover { transform:translateY(-1px); box-shadow:0 10px 24px rgba(17, 24, 39, 0.06); }
                 .jsn-card-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; border-bottom:1px solid #f3f4f6; padding-bottom:12px; margin-bottom:14px; }
                 .jsn-eyebrow { text-transform:uppercase; letter-spacing:0.5px; font-size:11px; color:#6b7280; margin:0 0 4px 0; }
-                .jsn-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px; }
-                .jsn-inline { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+                .jsn-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
+                .jsn-card .jsn-grid > div { display:flex; flex-direction:column; gap:12px; }
+                .jsn-inline { display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end; }
                 .jsn-toggle { display:flex; align-items:center; gap:8px; font-weight:600; background:#f9fafb; padding:8px 12px; border-radius:8px; border:1px solid #e5e7eb; }
                 .jsn-toggle input { transform: scale(1.2); margin:0; }
                 .jsn-foot-note { margin-top:12px; font-size:12px; color:#4b5563; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
@@ -119,6 +120,14 @@ class JSN_Social_Proof_Plugin {
                 .jsn-tip { width:18px; height:18px; border-radius:50%; background:#111827; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer; position:relative; font-size:10px; }
                 .jsn-tip::after { content: attr(data-tip); position:absolute; top:24px; left:0; transform:translateX(0); background:#111827; color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; line-height:1.4; width:max(220px, 32vw); max-width:360px; white-space:normal; text-align:left; box-shadow:0 6px 18px rgba(0,0,0,0.15); opacity:0; pointer-events:none; transition:opacity 0.15s ease; z-index:100; }
                 .jsn-tip:hover::after { opacity:1; }
+                .jsn-card label:not(.jsn-toggle) { display:flex; flex-direction:column; gap:6px; font-weight:600; color:#111827; }
+                .jsn-card input[type="text"],
+                .jsn-card input[type="number"],
+                .jsn-card input[type="email"],
+                .jsn-card textarea,
+                .jsn-card select { padding:10px 12px; border-radius:8px; border:1px solid #d1d5db; box-shadow: inset 0 1px 2px rgba(0,0,0,0.03); }
+                .jsn-card textarea { min-height:90px; }
+                .jsn-card .description { margin-top:-4px; }
                 @media (max-width: 960px) {
                     .jsn-admin { padding-right: 8px; padding-left: 0; }
                     .jsn-card { padding:16px; }
