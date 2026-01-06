@@ -48,13 +48,14 @@ Todas las opciones se almacenan mediante la API de Settings (`jsn_group`). Cada 
 - Shortcode: `[jsn_newsletter]` (compatible con Elementor).
 - Almacenamiento: tabla `{$wpdb->prefix}jsn_newsletter` creada en la activación.
 - Exportación: botón de descarga CSV desde el panel (`admin-post.php?action=jsn_exportar_correos`).
-- Procesamiento: AJAX `jsn_guardar_correo` valida nonce, guarda correo, envía email HTML y responde en JSON.
+- Procesamiento: AJAX `jsn_guardar_correo` valida nonce, guarda correo, envía email HTML y responde en JSON. Usa listener global sobre `submit` para evitar recargas en pop-ups y contenidos insertados dinámicamente (Elementor, modales, etc.).
+- Estilos del formulario: layout responsivo con botón a ancho completo, separación entre campos y textos, y envolvente con bordes y sombra suave para mayor legibilidad en pop-ups.
 
 ## Flujo de datos y consideraciones técnicas
 - **Seguridad**: uso de `wp_verify_nonce`, saneado de entradas con `sanitize_email`, `sanitize_text_field`, y sanitización de HTML con `wp_kses_post`.
 - **Compatibilidad**: sin dependencias externas; se apoya en WooCommerce si está activo para datos reales del popup.
 - **Rendimiento**: caché de pedidos reales en transiente y uso moderado de scripts en línea por módulo activo.
-- **Accesibilidad/UX**: mensajes cortos en español, formularios con estado de envío y validación básica.
+- **Accesibilidad/UX**: mensajes cortos en español, formularios con estado de envío y validación básica; botón a ancho completo y espaciados mejorados en móviles y pop-ups.
 
 ## Personalización rápida
 - Cambiar colores y textos desde el panel **Social Proof**.

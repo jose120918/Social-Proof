@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Notificador de últimas compras (Pro)
  * Description: Social Proof modular: notificaciones, contador de vistas, aviso de precio dinámico y captación de correos.
- * Version: 5.0.0
+ * Version: 5.1.0
  * Author: Jose Muñoz
  */
 
@@ -598,45 +598,63 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
 
         ob_start();
         ?>
-        <form class="jsn-newsletter-form" data-endpoint="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>">
-            <div class="jsn-newsletter-campo">
-                <label for="jsn-newsletter-email">Correo electrónico</label>
-                <input type="email" id="jsn-newsletter-email" name="email" required placeholder="tu@correo.com">
-            </div>
-            <button type="submit" style="background:<?php echo $color; ?>; color:#fff; border:none; padding:10px 16px; border-radius:4px; cursor:pointer;">Enviar</button>
-            <p class="jsn-newsletter-disclaimer" style="font-size:12px; color:#555;"><?php echo $disclaimer; ?></p>
-            <div class="jsn-newsletter-mensaje" style="margin-top:8px; font-size:13px;"></div>
-        </form>
+        <div class="jsn-newsletter-wrap" style="max-width: 520px; margin: 0 auto; padding: 18px 20px; background: #f7f9fc; border: 1px solid #e4e8ef; border-radius: 12px; box-shadow: 0 6px 18px rgba(16,24,40,0.06);">
+            <form class="jsn-newsletter-form" data-endpoint="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" style="display:flex; flex-direction:column; gap:12px; width:100%;">
+                <div class="jsn-newsletter-texto" style="display:flex; flex-direction:column; gap:6px;">
+                    <div style="font-weight:700; font-size:18px; color:#111827;">Suscríbete y recibe novedades</div>
+                    <div style="font-size:14px; color:#4b5563; line-height:1.5;">Ingresa tu correo para recibir promociones y noticias exclusivas.</div>
+                </div>
+                <div class="jsn-newsletter-campo" style="display:flex; flex-direction:column; gap:6px;">
+                    <label for="jsn-newsletter-email" style="font-size:14px; font-weight:600; color:#111827;">Correo electrónico</label>
+                    <input type="email" id="jsn-newsletter-email" name="email" required placeholder="tu@correo.com" style="width:100%; padding:12px 14px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; color:#111827; background:#fff; box-sizing:border-box;">
+                </div>
+                <button type="submit" style="width:100%; background:<?php echo $color; ?>; color:#fff; border:none; padding:12px 14px; border-radius:8px; cursor:pointer; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; box-shadow:0 4px 10px rgba(0,0,0,0.08); transition:transform 0.1s ease, box-shadow 0.1s ease;">Enviar</button>
+                <p class="jsn-newsletter-disclaimer" style="font-size:12px; color:#4b5563; line-height:1.5; margin:0;"><?php echo $disclaimer; ?></p>
+                <div class="jsn-newsletter-mensaje" aria-live="polite" style="margin-top:4px; font-size:13px; min-height:18px; color:#374151;"></div>
+            </form>
+        </div>
         <script>
         (function(){
-            var form = document.currentScript.previousElementSibling;
-            if(!form || !form.classList.contains('jsn-newsletter-form')) return;
-            var mensaje = form.querySelector('.jsn-newsletter-mensaje');
-            form.addEventListener('submit', function(e){
-                e.preventDefault();
+            if (window.JSNNewsletterGlobalHandler) return;
+            window.JSNNewsletterGlobalHandler = true;
+
+            function manejarSubmit(event) {
+                var form = event.target;
+                if (!form.classList.contains('jsn-newsletter-form')) return;
+                event.preventDefault();
+
+                var mensaje = form.querySelector('.jsn-newsletter-mensaje');
+                var input = form.querySelector('input[name="email"]');
+                if (!input) return;
+
+                var correo = input.value;
                 mensaje.textContent = 'Enviando...';
+                mensaje.style.color = '#374151';
+
                 var datos = new FormData();
                 datos.append('action', 'jsn_guardar_correo');
-                datos.append('nonce', form.dataset.nonce);
-                datos.append('email', form.querySelector('input[name=\"email\"]').value);
+                datos.append('nonce', form.dataset.nonce || '');
+                datos.append('email', correo);
 
                 fetch(form.dataset.endpoint, { method:'POST', body: datos, credentials:'same-origin' })
-                    .then(r => r.json())
-                    .then(res => {
-                        if(res.success){
-                            mensaje.style.color = '#1d8c00';
-                            mensaje.textContent = res.data.mensaje;
+                    .then(function(r){ return r.json(); })
+                    .then(function(res){
+                        if(res && res.success){
+                            mensaje.style.color = '#0f5132';
+                            mensaje.textContent = res.data.mensaje || 'Registro exitoso.';
                             form.reset();
                         } else {
-                            mensaje.style.color = '#cc0000';
-                            mensaje.textContent = res.data && res.data.mensaje ? res.data.mensaje : 'No se pudo guardar el correo.';
+                            mensaje.style.color = '#842029';
+                            mensaje.textContent = (res && res.data && res.data.mensaje) ? res.data.mensaje : 'No se pudo guardar el correo.';
                         }
                     })
-                    .catch(() => {
-                        mensaje.style.color = '#cc0000';
+                    .catch(function(){
+                        mensaje.style.color = '#842029';
                         mensaje.textContent = 'Error de comunicación. Inténtalo de nuevo.';
                     });
-            });
+            }
+
+            document.addEventListener('submit', manejarSubmit, true);
         })();
         </script>
         <?php
