@@ -49,7 +49,7 @@ Todas las opciones se almacenan mediante la API de Settings (`jsn_group`). Cada 
 - Almacenamiento: tabla `{$wpdb->prefix}jsn_newsletter` creada en la activación.
 - Exportación: botón de descarga CSV desde el panel (`admin-post.php?action=jsn_exportar_correos`).
 - Procesamiento: AJAX `jsn_guardar_correo` valida nonce, guarda correo, envía email HTML y responde en JSON. Usa listener global sobre `submit` para evitar recargas en pop-ups y contenidos insertados dinámicamente (Elementor, modales, etc.).
-- Estilos del formulario: layout responsivo con botón a ancho completo, separación entre campos y textos, y envolvente con bordes y sombra suave para mayor legibilidad en pop-ups.
+- Estilos del formulario: layout responsivo y minimalista (sin card ni bordes externos), botón a ancho completo y textos configurables desde el dashboard (título, descripción, etiqueta, placeholder y texto del botón).
 - Cupón y confirmación: `jsn_newsletter_coupon_code` para rellenar el placeholder `%COUPON_CODE%` en la plantilla HTML (incluida por defecto con el diseño proporcionado) y `jsn_newsletter_success_text` para el mensaje de éxito que ve el usuario.
 - Sanitización del correo: la plantilla HTML se limpia permitiendo tablas, estilos inline e imágenes, y se admiten etiquetas `html`, `head`, `body`, `style`, `meta`, `title`. Si la salida quedara vacía se usa la plantilla por defecto con cupón, evitando errores de “Message body empty”.
 

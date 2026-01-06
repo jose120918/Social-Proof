@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Notificador de últimas compras (Pro)
  * Description: Social Proof modular: notificaciones, contador de vistas, aviso de precio dinámico y captación de correos.
- * Version: 5.4.0
+ * Version: 5.5.0
  * Author: Jose Muñoz
  */
 

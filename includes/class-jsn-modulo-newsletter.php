@@ -17,6 +17,11 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
     public function registrar_ajustes() {
         register_setting( 'jsn_group', 'jsn_newsletter_enabled' );
         register_setting( 'jsn_group', 'jsn_newsletter_button_color' );
+        register_setting( 'jsn_group', 'jsn_newsletter_button_text' );
+        register_setting( 'jsn_group', 'jsn_newsletter_title' );
+        register_setting( 'jsn_group', 'jsn_newsletter_description' );
+        register_setting( 'jsn_group', 'jsn_newsletter_label' );
+        register_setting( 'jsn_group', 'jsn_newsletter_placeholder' );
         register_setting( 'jsn_group', 'jsn_newsletter_disclaimer' );
         register_setting( 'jsn_group', 'jsn_newsletter_email_html' );
         register_setting( 'jsn_group', 'jsn_newsletter_subject' );
@@ -43,6 +48,11 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
                 <div>
                     <h4>Formulario</h4>
                     <label>Color del botón <input type="color" name="jsn_newsletter_button_color" value="<?php echo esc_attr( get_option( 'jsn_newsletter_button_color', '#0073aa' ) ); ?>"></label>
+                    <label>Texto del botón <input type="text" name="jsn_newsletter_button_text" value="<?php echo esc_attr( get_option( 'jsn_newsletter_button_text', 'Enviar' ) ); ?>" class="regular-text"></label>
+                    <label>Título visible <input type="text" name="jsn_newsletter_title" value="<?php echo esc_attr( get_option( 'jsn_newsletter_title', 'Suscríbete y recibe novedades' ) ); ?>" class="large-text"></label>
+                    <label>Descripción <textarea name="jsn_newsletter_description" rows="2" class="large-text"><?php echo esc_textarea( get_option( 'jsn_newsletter_description', 'Ingresa tu correo para recibir promociones y noticias exclusivas.' ) ); ?></textarea></label>
+                    <label>Etiqueta del campo <input type="text" name="jsn_newsletter_label" value="<?php echo esc_attr( get_option( 'jsn_newsletter_label', 'Correo electrónico' ) ); ?>" class="regular-text"></label>
+                    <label>Placeholder <input type="text" name="jsn_newsletter_placeholder" value="<?php echo esc_attr( get_option( 'jsn_newsletter_placeholder', 'tu@correo.com' ) ); ?>" class="regular-text"></label>
                     <label>Texto de éxito <input type="text" name="jsn_newsletter_success_text" value="<?php echo esc_attr( get_option( 'jsn_newsletter_success_text', '¡Gracias! Revisa tu bandeja de entrada para ver tu cupón.' ) ); ?>" class="large-text"></label>
                     <label>Disclaimer <textarea name="jsn_newsletter_disclaimer" rows="3" class="large-text"><?php echo esc_textarea( get_option( 'jsn_newsletter_disclaimer', 'Acepto la política de tratamiento de datos conforme a la Ley 1581 de 2012 (Colombia).' ) ); ?></textarea></label>
                 </div>
@@ -78,25 +88,28 @@ class JSN_Modulo_Newsletter extends JSN_Modulo_Base {
 
         $color      = esc_attr( get_option( 'jsn_newsletter_button_color', '#0073aa' ) );
         $disclaimer = wp_kses_post( get_option( 'jsn_newsletter_disclaimer', 'Acepto la política de tratamiento de datos conforme a la Ley 1581 de 2012 (Colombia).' ) );
+        $titulo     = esc_html( get_option( 'jsn_newsletter_title', 'Suscríbete y recibe novedades' ) );
+        $descripcion= wp_kses_post( get_option( 'jsn_newsletter_description', 'Ingresa tu correo para recibir promociones y noticias exclusivas.' ) );
+        $label      = esc_html( get_option( 'jsn_newsletter_label', 'Correo electrónico' ) );
+        $placeholder= esc_attr( get_option( 'jsn_newsletter_placeholder', 'tu@correo.com' ) );
+        $btn_text   = esc_html( get_option( 'jsn_newsletter_button_text', 'Enviar' ) );
         $nonce      = wp_create_nonce( 'jsn_newsletter_nonce' );
 
         ob_start();
         ?>
-        <div class="jsn-newsletter-wrap" style="max-width: 520px; margin: 0 auto; padding: 18px 20px; background: #f7f9fc; border: 1px solid #e4e8ef; border-radius: 12px; box-shadow: 0 6px 18px rgba(16,24,40,0.06);">
-            <form class="jsn-newsletter-form" data-endpoint="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" style="display:flex; flex-direction:column; gap:12px; width:100%;">
-                <div class="jsn-newsletter-texto" style="display:flex; flex-direction:column; gap:6px;">
-                    <div style="font-weight:700; font-size:18px; color:#111827;">Suscríbete y recibe novedades</div>
-                    <div style="font-size:14px; color:#4b5563; line-height:1.5;">Ingresa tu correo para recibir promociones y noticias exclusivas.</div>
-                </div>
-                <div class="jsn-newsletter-campo" style="display:flex; flex-direction:column; gap:6px;">
-                    <label for="jsn-newsletter-email" style="font-size:14px; font-weight:600; color:#111827;">Correo electrónico</label>
-                    <input type="email" id="jsn-newsletter-email" name="email" required placeholder="tu@correo.com" style="width:100%; padding:12px 14px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; color:#111827; background:#fff; box-sizing:border-box;">
-                </div>
-                <button type="submit" style="width:100%; background:<?php echo $color; ?>; color:#fff; border:none; padding:12px 14px; border-radius:8px; cursor:pointer; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; box-shadow:0 4px 10px rgba(0,0,0,0.08); transition:transform 0.1s ease, box-shadow 0.1s ease;">Enviar</button>
-                <p class="jsn-newsletter-disclaimer" style="font-size:12px; color:#4b5563; line-height:1.5; margin:0;"><?php echo $disclaimer; ?></p>
-                <div class="jsn-newsletter-mensaje" aria-live="polite" style="margin-top:4px; font-size:13px; min-height:18px; color:#374151;"></div>
-            </form>
-        </div>
+        <form class="jsn-newsletter-form" data-endpoint="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:520px;">
+            <div class="jsn-newsletter-texto" style="display:flex; flex-direction:column; gap:4px;">
+                <div style="font-weight:700; font-size:18px; color:#111827;"><?php echo $titulo; ?></div>
+                <div style="font-size:14px; color:#4b5563; line-height:1.5;"><?php echo $descripcion; ?></div>
+            </div>
+            <div class="jsn-newsletter-campo" style="display:flex; flex-direction:column; gap:4px;">
+                <label for="jsn-newsletter-email" style="font-size:14px; font-weight:600; color:#111827;"><?php echo $label; ?></label>
+                <input type="email" id="jsn-newsletter-email" name="email" required placeholder="<?php echo $placeholder; ?>" style="width:100%; padding:12px 14px; border:1px solid #d1d5db; border-radius:4px; font-size:14px; color:#111827; background:#fff; box-sizing:border-box;">
+            </div>
+            <button type="submit" style="width:100%; background:<?php echo $color; ?>; color:#fff; border:none; padding:12px 14px; border-radius:4px; cursor:pointer; font-weight:700; text-transform:uppercase; letter-spacing:0.4px;"><?php echo $btn_text; ?></button>
+            <p class="jsn-newsletter-disclaimer" style="font-size:12px; color:#4b5563; line-height:1.5; margin:0;"><?php echo $disclaimer; ?></p>
+            <div class="jsn-newsletter-mensaje" aria-live="polite" style="margin-top:4px; font-size:13px; min-height:18px; color:#374151;"></div>
+        </form>
         <script>
         (function(){
             if (window.JSNNewsletterGlobalHandler) return;
