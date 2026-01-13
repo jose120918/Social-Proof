@@ -93,7 +93,7 @@ class JSN_Modulo_Notificaciones extends JSN_Modulo_Base {
         if ( ! get_option( 'jsn_popup_enabled', 1 ) ) {
             return;
         }
-        if ( function_exists( 'is_cart' ) && ( is_cart() || is_checkout() ) ) {
+        if ( function_exists( 'is_cart' ) && ( is_cart() || is_checkout() || is_account_page() ) ) {
             return;
         }
         if ( wp_is_mobile() && ! get_option( 'jsn_show_mobile' ) ) {
@@ -264,4 +264,5 @@ class JSN_Modulo_Notificaciones extends JSN_Modulo_Base {
 
         return apply_filters( 'jsn_popup_data', $data );
     }
+
 }

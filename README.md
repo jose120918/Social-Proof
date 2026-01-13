@@ -24,6 +24,7 @@ Todas las opciones se almacenan mediante la API de Settings (`jsn_group`). Cada 
 - Texto: `jsn_pv_text` admite `%n`, `%title%`, `%category%`.
 - Estilos: `jsn_pv_bg_color`, `jsn_pv_text_color`, `jsn_pv_font_size`, `jsn_pv_icon_class`.
 - **Shortcode**: `[jsn_viewer]` (útil para Elementor).
+- **Shortcode avanzado**: `[jsn_viewer activar="1" minimo="8" maximo="22" texto="%n personas están viendo %title%" fondo="#f3f4f6" color_texto="#111827" icono="dashicons dashicons-visibility" tamano_fuente="13" id="landing-1"]`.
 - Hook automático: `woocommerce_single_product_summary` (prioridad 15).
 
 ### 2) Ventana flotante de refuerzo de compra
@@ -39,13 +40,17 @@ Todas las opciones se almacenan mediante la API de Settings (`jsn_group`). Cada 
 - Mensaje: `jsn_price_label`.
 - Estilos: `jsn_price_bg`, `jsn_price_text`.
 - Hook: `woocommerce_single_product_summary` (prioridad 11). Solo muestra un aviso, no modifica precios.
+- **Shortcode**: `[jsn_precio]`.
+- **Shortcode avanzado**: `[jsn_precio activar="1" texto="Precio variable por alta demanda." fondo="#fff3cd" color_texto="#7c4d00" icono="dashicons dashicons-chart-line"]`.
 
 ### 4) Newsletter y captación de correos
 - **Activar módulo**: `jsn_newsletter_enabled`.
 - Apariencia: `jsn_newsletter_button_color`.
 - Legal: `jsn_newsletter_disclaimer` (incluye referencia a Ley 1581 de 2012 por defecto).
 - Contenido del envío: `jsn_newsletter_subject`, `jsn_newsletter_email_html`.
+- Colores de plantilla: `jsn_newsletter_email_color_principal`, `jsn_newsletter_email_color_fondo`, `jsn_newsletter_email_color_texto`, `jsn_newsletter_email_color_boton`, `jsn_newsletter_email_color_boton_texto`.
 - Shortcode: `[jsn_newsletter]` (compatible con Elementor).
+- **Shortcode avanzado**: `[jsn_newsletter activar="1" color_boton="#0ea5e9" titulo="Únete" descripcion="Recibe novedades" etiqueta="Email" placeholder="tucorreo@email.com" texto_boton="Enviar" disclaimer="Acepto la política" texto_exito="¡Listo!"]`.
 - Almacenamiento: tabla `{$wpdb->prefix}jsn_newsletter` creada en la activación.
 - Exportación: botón de descarga CSV desde el panel (`admin-post.php?action=jsn_exportar_correos`).
 - Procesamiento: AJAX `jsn_guardar_correo` valida nonce, guarda correo, envía email HTML y responde en JSON. Usa listener global sobre `submit` para evitar recargas en pop-ups y contenidos insertados dinámicamente (Elementor, modales, etc.).
@@ -55,7 +60,8 @@ Todas las opciones se almacenan mediante la API de Settings (`jsn_group`). Cada 
 - Menú en el admin: **Notificador de últimas compras**.
 - Dashboard modernizado con tarjetas elevadas, toggles resaltados, tooltips legibles y espaciados/controles más amplios para facilitar lectura (responsive).
 - Cupón y confirmación: `jsn_newsletter_coupon_code` para rellenar el placeholder `%COUPON_CODE%` en la plantilla HTML (incluida por defecto con el diseño proporcionado) y `jsn_newsletter_success_text` para el mensaje de éxito que ve el usuario.
-- Sanitización del correo: la plantilla HTML se limpia permitiendo tablas, estilos inline e imágenes, y se admiten etiquetas `html`, `head`, `body`, `style`, `meta`, `title`. Si la salida quedara vacía se usa la plantilla por defecto con cupón, evitando errores de “Message body empty”.
+- Tokens de color: `%COLOR_PRINCIPAL%`, `%COLOR_FONDO%`, `%COLOR_TEXTO%`, `%COLOR_BOTON%`, `%COLOR_BOTON_TEXTO%` para conectar la plantilla con los colores del panel.
+- Sanitización del correo: la plantilla HTML se limpia permitiendo tablas, estilos inline e imágenes, y se admiten etiquetas `html`, `head`, `body`, `style`, `meta`, `title`, además de `class` y `bgcolor`. Si la salida quedara vacía se usa la plantilla por defecto con cupón, evitando errores de “Message body empty”.
 
 ## Estructura por archivos (refactor)
 - `plugin-social.php`: bootstrap, cabecera y carga de clases.
@@ -80,6 +86,8 @@ Todas las opciones se almacenan mediante la API de Settings (`jsn_group`). Cada 
 - Cambiar colores y textos desde el panel **Social Proof**.
 - Insertar shortcodes en plantillas, widgets o Elementor.
 - Editar la plantilla HTML del correo directamente en el campo “HTML del correo”.
+### Personalización por página o sección
+- Usa los shortcodes avanzados para sobrescribir textos, colores y rangos en cada sección.
 
 ## Exportación y cumplimiento
 - Descarga CSV con todos los correos registrados (email, fecha, IP).
