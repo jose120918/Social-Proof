@@ -89,7 +89,7 @@ class JSN_Social_Proof_Plugin {
                     <h1>Notificador de últimas compras</h1>
                     <p class="description">Controla visitas, popup, aviso de precios y newsletter en un solo lugar.</p>
                     <div class="jsn-tags">
-                        <span class="jsn-tag">Versión 5.6.0</span>
+                        <span class="jsn-tag">Versión 5.8.1</span>
                         <span class="jsn-tag jsn-soft">WooCommerce</span>
                         <span class="jsn-tag jsn-soft">Shortcodes</span>
                     </div>

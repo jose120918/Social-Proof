@@ -69,55 +69,82 @@ class JSN_Modulo_Visitas extends JSN_Modulo_Base {
 
     public function registrar_shortcodes() {}
 
-    public function renderizar_shortcode() {
-        return $this->obtener_html();
+    public function renderizar_shortcode( $atributos = array() ) {
+        return $this->obtener_html( $atributos, false );
     }
 
     public function renderizar_en_hook() {
-        echo $this->obtener_html();
+        echo $this->obtener_html( array(), true );
     }
 
-    private function obtener_html() {
-        if ( ! function_exists( 'is_product' ) || ! is_product() || ! get_option( 'jsn_pv_enabled' ) ) {
+    private function obtener_html( $atributos = array(), $solo_producto = false ) {
+        $atributos = shortcode_atts(
+            array(
+                'activar'       => '',
+                'minimo'        => '',
+                'maximo'        => '',
+                'texto'         => '',
+                'fondo'         => '',
+                'color_texto'   => '',
+                'icono'         => '',
+                'tamano_fuente' => '',
+                'id'            => '',
+            ),
+            $atributos,
+            'jsn_viewer'
+        );
+
+        $activado = $this->interpretar_activacion( $atributos['activar'], get_option( 'jsn_pv_enabled' ) );
+        if ( ! $activado ) {
             return '';
         }
 
-        $min     = (int) get_option( 'jsn_pv_min', 10 );
-        $max     = (int) get_option( 'jsn_pv_max', 30 );
-        $prod_id = get_the_ID();
+        $es_producto = function_exists( 'is_product' ) && is_product();
+        if ( $solo_producto && ! $es_producto ) {
+            return '';
+        }
+
+        $min      = (int) $this->resolver_atributo_numerico( $atributos['minimo'], get_option( 'jsn_pv_min', 10 ) );
+        $max      = (int) $this->resolver_atributo_numerico( $atributos['maximo'], get_option( 'jsn_pv_max', 30 ) );
+        $post_id  = get_the_ID();
+        $titulo   = get_the_title( $post_id );
+        $categoria = $this->obtener_categoria_contexto( $post_id, $es_producto );
 
         $reemplazos = array(
             '%n%'        => '<span class="jsn-count">...</span>',
             '%n'         => '<span class="jsn-count">...</span>',
-            '%title%'    => '<strong>' . get_the_title( $prod_id ) . '</strong>',
-            '%category%' => '<strong>' . strip_tags( wc_get_product_category_list( $prod_id, ', ', '', '' ) ) . '</strong>',
+            '%title%'    => '<strong>' . esc_html( $titulo ) . '</strong>',
+            '%category%' => '<strong>' . esc_html( $categoria ) . '</strong>',
         );
 
-        $texto = get_option( 'jsn_pv_text', '%n personas están viendo %title%' );
+        $texto = $this->resolver_atributo_texto( $atributos['texto'], get_option( 'jsn_pv_text', '%n personas están viendo %title%' ) );
         foreach ( $reemplazos as $llave => $valor ) {
             $texto = str_replace( $llave, $valor, $texto );
         }
 
         $estilo = sprintf(
             'display:none; background:%s; color:%s; padding:10px 15px; border-radius:5px; margin-bottom:15px; align-items:center; gap:10px; font-size:%spx;',
-            esc_attr( get_option( 'jsn_pv_bg_color', '#f5f5f5' ) ),
-            esc_attr( get_option( 'jsn_pv_text_color', '#333333' ) ),
-            esc_attr( get_option( 'jsn_pv_font_size', 14 ) )
+            esc_attr( $this->resolver_atributo_texto( $atributos['fondo'], get_option( 'jsn_pv_bg_color', '#f5f5f5' ) ) ),
+            esc_attr( $this->resolver_atributo_texto( $atributos['color_texto'], get_option( 'jsn_pv_text_color', '#333333' ) ) ),
+            esc_attr( $this->resolver_atributo_numerico( $atributos['tamano_fuente'], get_option( 'jsn_pv_font_size', 14 ) ) )
         );
+
+        $icono = $this->resolver_atributo_texto( $atributos['icono'], get_option( 'jsn_pv_icon_class', 'dashicons dashicons-visibility' ) );
+        $identificador = ! empty( $atributos['id'] ) ? sanitize_key( $atributos['id'] ) : $post_id;
 
         ob_start();
         ?>
-        <div id="jsn-viewer-<?php echo esc_attr( $prod_id ); ?>" style="<?php echo esc_attr( $estilo ); ?>">
-            <i class="<?php echo esc_attr( get_option( 'jsn_pv_icon_class', 'dashicons dashicons-visibility' ) ); ?>"></i>
+        <div id="jsn-viewer-<?php echo esc_attr( $identificador ); ?>" style="<?php echo esc_attr( $estilo ); ?>">
+            <i class="<?php echo esc_attr( $icono ); ?>"></i>
             <span><?php echo wp_kses_post( $texto ); ?></span>
         </div>
         <script>
             (function () {
-                var box = document.getElementById('jsn-viewer-<?php echo esc_js( $prod_id ); ?>');
+                var box = document.getElementById('jsn-viewer-<?php echo esc_js( $identificador ); ?>');
                 if (!box) return;
                 var countSpan = box.querySelector('.jsn-count');
                 var min = <?php echo (int) $min; ?>, max = <?php echo (int) $max; ?>;
-                var key = 'jsn_v_<?php echo esc_js( $prod_id ); ?>';
+                var key = 'jsn_v_<?php echo esc_js( $identificador ); ?>';
 
                 var current = parseInt(sessionStorage.getItem(key));
                 if (isNaN(current)) current = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -142,5 +169,52 @@ class JSN_Modulo_Visitas extends JSN_Modulo_Base {
         </script>
         <?php
         return ob_get_clean();
+    }
+
+    private function obtener_categoria_contexto( $post_id, $es_producto ) {
+        if ( $es_producto && function_exists( 'wc_get_product_category_list' ) ) {
+            $categorias = strip_tags( wc_get_product_category_list( $post_id, ', ', '', '' ) );
+            return $categorias ? $categorias : 'producto';
+        }
+
+        $categorias = get_the_category_list( ', ', '', $post_id );
+        if ( ! empty( $categorias ) ) {
+            return strip_tags( $categorias );
+        }
+
+        return 'contenido';
+    }
+
+    private function interpretar_activacion( $valor, $por_defecto ) {
+        if ( '' === $valor || null === $valor ) {
+            return (bool) $por_defecto;
+        }
+
+        $valor = strtolower( trim( (string) $valor ) );
+        $verdaderos = array( '1', 'true', 'si', 'sí', 'on' );
+        $falsos     = array( '0', 'false', 'no', 'off' );
+
+        if ( in_array( $valor, $verdaderos, true ) ) {
+            return true;
+        }
+        if ( in_array( $valor, $falsos, true ) ) {
+            return false;
+        }
+
+        return (bool) $por_defecto;
+    }
+
+    private function resolver_atributo_numerico( $valor, $por_defecto ) {
+        if ( '' === $valor || null === $valor ) {
+            return (int) $por_defecto;
+        }
+        return (int) $valor;
+    }
+
+    private function resolver_atributo_texto( $valor, $por_defecto ) {
+        if ( '' === $valor || null === $valor ) {
+            return (string) $por_defecto;
+        }
+        return (string) $valor;
     }
 }
